@@ -1,0 +1,145 @@
+/* Links Valuers — site interactions */
+(function () {
+  'use strict';
+
+  /* ---------- Mobile menu ---------- */
+  var burger = document.querySelector('.nav__burger');
+  var body = document.body;
+  if (burger) {
+    burger.addEventListener('click', function () {
+      var open = body.classList.toggle('menu-open');
+      burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    document.querySelectorAll('.mobile-menu a').forEach(function (a) {
+      a.addEventListener('click', function () { body.classList.remove('menu-open'); });
+    });
+  }
+
+  /* ---------- Active nav link ---------- */
+  var path = location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('.nav__links a, .mobile-menu a').forEach(function (a) {
+    var href = a.getAttribute('href');
+    if (href === path) a.classList.add('is-active');
+  });
+
+  /* ---------- Footer year ---------- */
+  var yr = document.getElementById('year');
+  if (yr) yr.textContent = new Date().getFullYear();
+
+  /* ---------- Scroll reveal ---------- */
+  var reveals = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window && reveals.length) {
+    var ro = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('in'); ro.unobserve(e.target); }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    reveals.forEach(function (el) { ro.observe(el); });
+  } else {
+    reveals.forEach(function (el) { el.classList.add('in'); });
+  }
+
+  /* ---------- Animated stat counters ---------- */
+  function animateCount(el) {
+    var raw = el.getAttribute('data-count');
+    var suffix = el.getAttribute('data-suffix') || '';
+    var prefix = el.getAttribute('data-prefix') || '';
+    var decimals = (raw.indexOf('.') > -1) ? raw.split('.')[1].length : 0;
+    var target = parseFloat(raw);
+    var dur = 1600, start = null;
+    function step(ts) {
+      if (!start) start = ts;
+      var p = Math.min((ts - start) / dur, 1);
+      var eased = 1 - Math.pow(1 - p, 3);
+      var val = (target * eased).toFixed(decimals);
+      el.textContent = prefix + Number(val).toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals }) + suffix;
+      if (p < 1) requestAnimationFrame(step);
+      else el.textContent = prefix + Number(target).toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals }) + suffix;
+    }
+    requestAnimationFrame(step);
+  }
+  var counters = document.querySelectorAll('[data-count]');
+  if ('IntersectionObserver' in window && counters.length) {
+    var co = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { animateCount(e.target); co.unobserve(e.target); }
+      });
+    }, { threshold: 0.5 });
+    counters.forEach(function (el) { co.observe(el); });
+  } else {
+    counters.forEach(function (el) {
+      el.textContent = (el.getAttribute('data-prefix') || '') + el.getAttribute('data-count') + (el.getAttribute('data-suffix') || '');
+    });
+  }
+
+  /* ---------- FAQ accordion ---------- */
+  document.querySelectorAll('.faq-q').forEach(function (q) {
+    q.addEventListener('click', function () {
+      var item = q.closest('.faq-item');
+      var ans = item.querySelector('.faq-a');
+      var isOpen = item.classList.contains('open');
+      if (isOpen) {
+        item.classList.remove('open');
+        ans.style.maxHeight = null;
+        q.setAttribute('aria-expanded', 'false');
+      } else {
+        item.classList.add('open');
+        ans.style.maxHeight = ans.scrollHeight + 'px';
+        q.setAttribute('aria-expanded', 'true');
+      }
+    });
+  });
+
+  /* ---------- FAQ category tabs ---------- */
+  document.querySelectorAll('.faq-tab').forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      var cat = tab.getAttribute('data-cat');
+      document.querySelectorAll('.faq-tab').forEach(function (t) { t.classList.remove('is-active'); });
+      tab.classList.add('is-active');
+      document.querySelectorAll('.faq-cat').forEach(function (c) {
+        c.classList.toggle('is-active', c.getAttribute('data-cat') === cat);
+      });
+    });
+  });
+
+  /* ---------- Service type prefill (book-valuation) ---------- */
+  var params = new URLSearchParams(location.search);
+  var presetType = params.get('type');
+  if (presetType) {
+    var sel = document.getElementById('service-type');
+    if (sel) {
+      var map = {
+        insurance: 'Insurance Valuation', bank: 'Bank / Loan Collateral Valuation',
+        fleet: 'Fleet Valuation', accident: 'Accident Assessment',
+        'pre-purchase': 'Pre-Purchase Inspection', court: 'Court Report'
+      };
+      var want = map[presetType];
+      if (want) Array.prototype.forEach.call(sel.options, function (o) { if (o.value === want) sel.value = want; });
+    }
+  }
+
+  /* ---------- Forms (demo handling) ---------- */
+  document.querySelectorAll('form[data-demo]').forEach(function (form) {
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (!form.checkValidity()) { form.reportValidity(); return; }
+      var success = form.parentNode.querySelector('.form-success');
+      form.style.display = 'none';
+      if (success) {
+        success.classList.add('show');
+        success.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    });
+  });
+
+  /* ---------- WhatsApp form alternative ---------- */
+  document.querySelectorAll('[data-wa-send]').forEach(function (btn) {
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
+      var form = btn.closest('form');
+      var name = form && form.querySelector('[name="name"]') ? form.querySelector('[name="name"]').value : '';
+      var msg = 'Hello Links Valuers, I would like to book a valuation.' + (name ? ' My name is ' + name + '.' : '');
+      window.open('https://wa.me/254708412668?text=' + encodeURIComponent(msg), '_blank');
+    });
+  });
+})();
