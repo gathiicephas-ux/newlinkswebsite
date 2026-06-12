@@ -141,7 +141,7 @@ h1.display { font-size: clamp(2.6rem, 6vw, 4.6rem); }
 }
 .brand { display: flex; align-items: center; gap: 11px; flex-shrink: 0; }
 .brand:hover { text-decoration: none; }
-.brand__mark { width: 38px; height: 38px; flex-shrink: 0; }
+.brand__mark { width: 38px; height: 38px; flex-shrink: 0; border-radius: 50%; object-fit: cover; }
 .brand__text { display: flex; flex-direction: column; line-height: 1; }
 .brand__name {
   font-family: var(--font-display); font-weight: 800; text-transform: uppercase;

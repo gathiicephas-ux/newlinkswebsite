@@ -18,7 +18,7 @@ Static, mobile-first marketing site built to the v1.0 redesign brief.
 ## Structure
 - `css/styles.css` — full design system (tokens, components, responsive)
 - `js/main.js` — mobile menu, scroll reveal, animated counters, FAQ accordion/tabs, form demo + WhatsApp prefill, service-type prefill
-- `assets/logo.svg` — favicon / brand mark
+- `assets/logo.png` — official Links logo (favicon / brand mark)
 - `images/` — photography (+ `images/Management/` headshots)
 - `robots.txt`, `sitemap.xml` — SEO
 
