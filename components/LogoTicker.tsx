@@ -1,16 +1,16 @@
 'use client';
 import { useState } from 'react';
 
-export interface TickerLogo { name: string; domain: string; }
+export interface TickerLogo { name: string; src: string; }
 
-function TickerItem({ name, domain }: TickerLogo) {
+function TickerItem({ name, src }: TickerLogo) {
   const [failed, setFailed] = useState(false);
   const init = name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
   return (
     <div className="logo-ticker__item" title={name}>
       {!failed ? (
         <img
-          src={`https://logo.clearbit.com/${domain}`}
+          src={src}
           alt={name}
           width={120}
           height={44}

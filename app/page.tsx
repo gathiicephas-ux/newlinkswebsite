@@ -8,7 +8,7 @@ import Slider, { type SlideData } from '@/components/Slider';
 import CardSlider from '@/components/CardSlider';
 import LogoTicker from '@/components/LogoTicker';
 import LogoCard from '@/components/LogoCard';
-import { partnerGroups, DOMAIN_MAP, TICKER_LOGOS } from '@/lib/partners';
+import { partnerGroups, LOGO_MAP, TICKER_LOGOS } from '@/lib/partners';
 import { blogPosts } from '@/lib/blogPosts';
 
 export const metadata: Metadata = {
@@ -307,7 +307,7 @@ export default function HomePage() {
                     <h4>{group.label}</h4>
                     <div className="logo-grid">
                       {group.featured.map((p) => (
-                        <LogoCard key={p} name={p} domain={DOMAIN_MAP[p]} colorClass={colorClass} />
+                        <LogoCard key={p} name={p} src={LOGO_MAP[p]} colorClass={colorClass} />
                       ))}
                     </div>
                   </div>

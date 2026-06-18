@@ -3,19 +3,19 @@ import { useState } from 'react';
 
 interface LogoCardProps {
   name: string;
-  domain?: string;
+  src?: string;
   colorClass?: string;
 }
 
-export default function LogoCard({ name, domain, colorClass = 'logo-grid-init--green' }: LogoCardProps) {
-  const [failed, setFailed] = useState(!domain);
+export default function LogoCard({ name, src, colorClass = 'logo-grid-init--green' }: LogoCardProps) {
+  const [failed, setFailed] = useState(!src);
   const init = name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
 
   return (
     <div className="logo-grid-card">
-      {!failed && domain ? (
+      {!failed && src ? (
         <img
-          src={`https://logo.clearbit.com/${domain}`}
+          src={src}
           alt={name}
           width={110}
           height={48}

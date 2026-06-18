@@ -3,7 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import Reveal from '@/components/Reveal';
 import LogoCard from '@/components/LogoCard';
-import { partnerGroups, DOMAIN_MAP } from '@/lib/partners';
+import { partnerGroups, LOGO_MAP } from '@/lib/partners';
 
 export const metadata: Metadata = {
   title: "Our Clients — Trusted by Kenya's Leading Banks, Insurers & Corporates",
@@ -67,7 +67,7 @@ export default function ClientsPage() {
                     <h4>{group.label}</h4>
                     <div className="logo-grid" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))' }}>
                       {group.partners.map((p) => (
-                        <LogoCard key={p} name={p} domain={DOMAIN_MAP[p]} colorClass={colorClass} />
+                        <LogoCard key={p} name={p} src={LOGO_MAP[p]} colorClass={colorClass} />
                       ))}
                     </div>
                   </div>
