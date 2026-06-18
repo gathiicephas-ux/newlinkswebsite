@@ -68,7 +68,7 @@ Open `js/main.js` and find the `KB` array inside the chatbot section. Each
 entry looks like this:
 
 ```js
-{ keys: ['turnaround', 'how long', 'fast', 'delivery'], a: 'Most valuations are delivered within <b>4–48 hours</b> of inspection.' }
+{ keys: ['turnaround', 'how long', 'fast', 'delivery'], a: 'Most valuations are delivered within <b>2–24 hours</b> of inspection.' }
 ```
 
 - **`keys`** — a list of words/phrases. If the visitor's message contains *any*

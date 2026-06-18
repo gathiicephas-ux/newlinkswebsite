@@ -9,68 +9,80 @@
 **Tagline:** *Confidence Before Every Vehicle Decision™*
 **Industry:** Vehicle valuation & assessment (insurance, bank collateral, fleet, court reports, pre-purchase, accident assessment) — Kenya
 **Repo:** `gathiicephas-ux/linksvaluers` on GitHub
-**Live (GitHub Pages):** https://gathiicephas-ux.github.io/linksvaluers/
-**Intended production domain:** `www.linksvaluers.com` (see [Known Issues](#known-issues--pending-items) — not yet pointed at GitHub Pages)
+**Intended production domain:** `www.linksvaluers.com` (see [Known Issues](#9-known-issues--pending-items) — not yet pointed at a host)
+
+> ⚠️ **June 2026 migration:** the site was rebuilt from a hand-rolled static
+> HTML/CSS/JS site (originally hosted on GitHub Pages) to **Next.js**. GitHub
+> Pages cannot run a Next.js app with server features (it only serves static
+> files), so hosting needs to move to **Vercel** (recommended) or similar — see
+> [Deployment](#2-tech-stack--hosting). The old static files have been removed
+> from the repo; their content lives on in the Next.js pages below.
 
 ---
 
 ## 1. Tech Stack & Hosting
 
-This is a **fully static site** — plain HTML, CSS, and vanilla JavaScript. No
-build step, no framework, no package manager, no server-side code.
-
 | Layer | Choice |
 |---|---|
-| Markup | Hand-written HTML, one file per page |
-| Styles | A single `css/styles.css` design-system file (CSS custom properties) |
-| Behaviour | A single `js/main.js` (IIFE-scoped vanilla JS, no libraries) |
-| Fonts | Google Fonts — **Barlow Condensed** (display/headings) + **Inter** (body) |
-| Hosting | **GitHub Pages**, serving directly from the `main` branch root |
-| Forms / email | **FormSubmit.co** (no-signup, no-backend form-to-email forwarding) |
-| Maps | Keyless Google Maps `iframe` embed |
-| Chat widget | Custom rule-based JS chatbot (no AI API, no backend) — see [`CHATBOT.md`](CHATBOT.md) |
-
-**Why static + FormSubmit?** There's no server to run a real backend, database,
-or AI API call from. Every "dynamic" feature on this site (forms, the chatbot's
-lead capture) is solved by posting to a third-party service from the browser
-instead of standing up infrastructure — keeping hosting free and maintenance
-near zero.
+| Framework | **Next.js 16** (App Router, Turbopack), **React 19**, **TypeScript** |
+| Styles | A single `app/globals.css` design-system file (CSS custom properties) — ported 1:1 from the original site, no Tailwind |
+| Icons | **lucide-react** for generic UI icons; hand-drawn SVGs for brand/social marks (`components/icons/SocialIcons.tsx`, `components/WhatsAppIcon.tsx`) — lucide ships no brand icons |
+| Fonts | **Barlow Condensed** + **Inter**, self-hosted via `next/font/google` (no external request at runtime — faster than the old Google Fonts `<link>` tags) |
+| Images | `next/image` throughout — automatic resizing/format negotiation (AVIF/WebP), lazy-loading below the fold. Requires the `sharp` package for fast optimization (installed as a dependency) |
+| Forms / email | **FormSubmit.co**, now called **server-side** from `app/api/leads/route.ts` instead of directly from the browser |
+| Chat widget | Custom rule-based React chatbot (`components/Chatbot.tsx`) — no AI API, no separate backend. See [`CHATBOT.md`](CHATBOT.md) |
+| Maps | Keyless Google Maps `iframe` embed (unchanged from before) |
+| Hosting | **Vercel** (recommended — zero-config Next.js deploys, serverless functions for `/api/leads`) |
 
 ### Running locally
 ```bash
-python -m http.server 5500
+npm install
+npm run dev
 ```
-Then open `http://localhost:5500`.
+Open `http://localhost:3000`.
+
+### Building / running production locally
+```bash
+npm run build
+npm start
+```
 
 ### Deploying
-Push to `main` — GitHub Pages rebuilds automatically (usually live within a
-minute). There is no separate build/deploy step.
+Connect the GitHub repo to a Vercel project (or run `vercel`) — it auto-detects
+Next.js and deploys on every push to `main`. No build configuration needed.
+
+⚠️ **GitHub Pages will no longer work** for this repo — it can only serve
+static files, and this site now has a server-side API route (`/api/leads`)
+and on-demand image optimization. If `gathiicephas-ux.github.io/linksvaluers/`
+was bookmarked anywhere, it needs to be replaced with the new Vercel URL once
+deployed.
 
 ---
 
 ## 2. Site Map
 
-| File | URL path | Purpose |
+| Route | File | Purpose |
 |---|---|---|
-| `index.html` | `/` | Home — hero, trust strip, stats, AI-image promo slider, services, process timeline, why-Links comparison, testimonial, client pills, blog teaser slider, closing CTA |
-| `about.html` | `/about` | Story, mission/vision, values, dual-licensing, leadership grid (6), team gallery slider, awards |
-| `services.html` | `/services` | 6 service detail sections with deep-link anchors (`#insurance-valuation`, `#bank-valuation`, `#fleet-valuation`, `#court-reports`, `#accident-assessment`, `#pre-purchase-inspection`) |
-| `branches.html` | `/branches` | Map embed, branch directory, mobile assessor info |
-| `clients.html` | `/clients` | Full exhaustive partner list — 68 institutions across 4 categories |
-| `faqs.html` | `/faqs` | Category-tabbed accordion (General / Insurance / Bank / Fleet / Pre-Purchase) + FAQPage schema + avatar callout |
-| `blog.html` | `/blog` | 5 full-length articles (anchor-linked single page) + article index |
-| `contact.html` | `/contact` | Contact details, working contact form, Westlands map, LocalBusiness schema, avatar callout |
-| `book-valuation.html` | `/book-valuation` | Booking form (accepts `?type=` prefill from service CTAs across the site) |
+| `/` | `app/page.tsx` | Home — hero, trust strip, stats, AI-image promo slider, services, process timeline, why-Links comparison, testimonial, client pills, blog teaser slider, closing CTA |
+| `/about` | `app/about/page.tsx` | Story, mission/vision, values, dual-licensing, leadership grid (6), team gallery slider, awards |
+| `/services` | `app/services/page.tsx` | 6 service detail sections with anchor IDs (`#insurance-valuation`, `#bank-valuation`, `#fleet-valuation`, `#court-reports`, `#accident-assessment`, `#pre-purchase-inspection`) |
+| `/branches` | `app/branches/page.tsx` | Map embed, branch directory, mobile assessor info |
+| `/clients` | `app/clients/page.tsx` | Full exhaustive partner list — 68 institutions across 4 categories |
+| `/faqs` | `app/faqs/page.tsx` | Category-tabbed accordion (General / Insurance / Bank / Fleet / Pre-Purchase) + FAQPage schema + avatar callout |
+| `/blog`, `/blog/[slug]` | `app/blog/page.tsx`, `app/blog/[slug]/page.tsx` | Blog index + 5 individually-routed articles (statically generated) |
+| `/contact` | `app/contact/page.tsx` | Contact details, working contact form, Westlands map, LocalBusiness schema, avatar callout |
+| `/book-valuation` | `app/book-valuation/page.tsx` | Booking form (accepts `?type=` prefill from service CTAs across the site) |
+| `/privacy`, `/terms` | `app/privacy/page.tsx`, `app/terms/page.tsx` | Real policy pages (previously `href="#"` placeholders in the footer — fixed during the migration) |
+| `/robots.txt`, `/sitemap.xml` | `app/robots.ts`, `app/sitemap.ts` | Generated dynamically (the sitemap pulls blog slugs from `lib/blogPosts.ts` automatically, so new posts no longer need a manual sitemap edit) |
 
-All 9 pages share the same header/nav, mobile menu, footer, WhatsApp float
-button, and chatbot widget.
+All pages share `app/layout.tsx`: header/nav, mobile menu, footer, WhatsApp
+float button, and the chatbot widget.
 
 ---
 
 ## 3. Design System
 
-Defined in `css/styles.css` (`:root` block) and used consistently across every
-component:
+Defined in `app/globals.css` (`:root` block):
 
 | Token | Value | Use |
 |---|---|---|
@@ -81,35 +93,25 @@ component:
 | `--grey` / `--grey-light` | `#888888` / `#cfd6d0` | Body copy on light/dark |
 | `--radius-card` / `--radius-btn` | `8px` / `4px` | Corner rounding |
 | `--shadow-card` / `--shadow-lift` | subtle / pronounced | Resting vs. hover elevation |
-| Display font | Barlow Condensed 700/800, uppercase | All headings |
-| Body font | Inter 400–700 | Body copy, UI |
+| `--font-display` / `--font-body` | Barlow Condensed / Inter | Mapped to `next/font` CSS variables in `app/layout.tsx` |
 
-### Reusable components
-- **Buttons** — `.btn--primary` (green fill), `.btn--ghost` (for dark
-  backgrounds), `.btn--outline-dark` (for light backgrounds), `.btn--orange`
-- **Pills** — `.pill` with color-coded left borders: `--green` (banks),
-  `--orange` (insurers), `--blue` (SACCOs), `--purple` (MFBs); hover lift added
-- **Cards** — `.svc-card`, `.leader`, `.value-card`, `.blog-card` — all share
-  the same hover-lift + shadow pattern
-- **Sliders** — a single generic carousel engine (`data-slider` /
-  `.tslider__*`) reused three ways:
-  - Base style — team gallery slider (`about.html`)
-  - `.tslider--promo` modifier — full-bleed AI-image hero slider with bold text
-    overlays (`index.html`)
-  - A second, independent **card-slider** engine (`data-card-slider` /
-    `.blog-slider__*`) for the multi-card blog carousel, which steps by one
-    card width instead of one full slide
-- **Chatbot widget** — fully documented separately in [`CHATBOT.md`](CHATBOT.md)
-- **Reveal animations** — `.reveal` + IntersectionObserver fade/slide-in,
-  applied to nearly every section
-- **Animated counters** — `[data-count]` spans that count up when scrolled
-  into view (used for the homepage stats)
+### Reusable components (`components/`)
+- **Header / Footer** — shared chrome, `Header.tsx` manages mobile menu state via `usePathname()` + React state (replacing the old vanilla-JS body-class toggle)
+- **Reveal** — scroll-fade-in wrapper (IntersectionObserver), replaces the old global `.reveal` JS scan
+- **Counter** — animated stat count-up, same visual behaviour as before, now a typed component taking `value`/`prefix`/`suffix` props
+- **Slider** — generic carousel (`variant="default" | "promo"`), used for both the About team gallery and the homepage AI-image promo slider
+- **CardSlider** — separate multi-card carousel engine for the homepage blog teaser, steps by one card width
+- **FaqAccordion** — category tabs + accordion, data-driven from `lib/faqs.ts`
+- **BookingForm / ContactForm** — client components that POST JSON to `/api/leads`
+- **Chatbot** — full rule-based chat widget; see [`CHATBOT.md`](CHATBOT.md)
+- **AvatarCallout** — small reusable avatar+text card (FAQs, Contact, blog posts, homepage blog section)
+- **icons/SocialIcons.tsx**, **WhatsAppIcon.tsx** — hand-drawn brand SVGs (lucide-react has no Facebook/Instagram/X/TikTok/YouTube/WhatsApp icons)
 
 ---
 
 ## 4. Content Inventory
 
-### Partner / client list (68 institutions, `clients.html` + curated subset on `index.html`)
+### Partner / client list (68 institutions — `lib/partners.ts`)
 | Category | Count | Pill color |
 |---|---|---|
 | Insurance Companies | 23 | Orange |
@@ -117,25 +119,31 @@ component:
 | SACCOs | 10 | Blue |
 | Micro-Finance Banks | 27 | Purple |
 
-The homepage shows a curated "highlights + N more" subset per category with a
-"View All 100+ Partners" link through to the full `clients.html` list.
+`lib/partners.ts` holds both the full list (`/clients`) and a curated
+`featured` subset per category (homepage), with a "+N more" count computed
+automatically from the difference — no more manually keeping two HTML lists
+in sync.
 
-### Leadership team (`about.html`, 6 people)
+### Leadership team (`/about`, defined inline in `app/about/page.tsx`)
 Reuben Muiruri (Director of Business Operations), Jane Kanyeki (Business
 Development Manager), Stephen Kiragu (Head of Quality Control and Valuation),
 Caren Chepkoech (Head of Administration), Grace Wanjiru (Customer Service
 Representative), Dorcas Kanee (Head of Finance & HR).
 
-### Blog articles (`blog.html`, 5 posts, all original content written for this site)
-| # | Title | Category | Anchor slug |
+### Blog articles (`lib/blogPosts.ts`, 5 posts, each its own route)
+| # | Title | Category | Route |
 |---|---|---|---|
-| 1 | What To Do in the First Hour After a Breakdown or Accident | Accident Assessment | `#breakdown-accident-first-hour` |
-| 2 | Why GPS-Tagged Digital Reports Are Changing Valuation in Kenya | Technology | `#gps-tagged-digital-reports` |
-| 3 | Inside a Links Inspection: What We Actually Check | Quality Control | `#inside-a-links-inspection` |
-| 4 | Insurance Claim Stuck? Here's How an Independent Valuation Speeds It Up | Insurance | `#speed-up-insurance-claims` |
-| 5 | Buying a Used Car in Kenya? Don't Skip This One Step | Pre-Purchase | `#pre-purchase-inspection-used-car` |
+| 1 | What To Do in the First Hour After a Breakdown or Accident | Accident Assessment | `/blog/breakdown-accident-first-hour` |
+| 2 | Why GPS-Tagged Digital Reports Are Changing Valuation in Kenya | Technology | `/blog/gps-tagged-digital-reports` |
+| 3 | Inside a Links Inspection: What We Actually Check | Quality Control | `/blog/inside-a-links-inspection` |
+| 4 | Insurance Claim Stuck? Here's How an Independent Valuation Speeds It Up | Insurance | `/blog/speed-up-insurance-claims` |
+| 5 | Buying a Used Car in Kenya? Don't Skip This One Step | Pre-Purchase | `/blog/pre-purchase-inspection-used-car` |
 
-### FAQ categories (`faqs.html`)
+Adding a 6th post is now just adding one object to the `blogPosts` array in
+`lib/blogPosts.ts` — it automatically gets its own route, sitemap entry, and
+appears in the homepage teaser slider and `/blog` index.
+
+### FAQ categories (`lib/faqs.ts`)
 General, Insurance, Bank/Finance, Fleet, Pre-Purchase — each a tab-filtered
 accordion group.
 
@@ -150,34 +158,39 @@ operation · Dual-licensed by **M.A.A.K** and **I.R.A**.
 
 | Feature | Where | How it works |
 |---|---|---|
-| Mobile menu | All pages | Slide-out panel, hamburger toggle |
-| FAQ accordion + category tabs | `faqs.html` | Click-to-expand, tab-filtered groups |
-| Animated stat counters | `index.html` | Count up on scroll-into-view |
-| Scroll-reveal animations | All pages | Fade/slide-in via IntersectionObserver |
-| Team gallery slider | `about.html` | Autoplay carousel, arrows, dots, swipe |
-| AI-image promo slider | `index.html` | Full-bleed carousel with bold text overlays, same engine as above |
-| Blog card slider | `index.html` | Multi-card carousel, steps one card at a time, arrows + swipe |
-| Booking form | `book-valuation.html` | Real submission → emails `info@linksvaluers.com` via FormSubmit |
-| Contact form | `contact.html` | Same FormSubmit pattern |
-| Chatbot widget | All pages | Rule-based Q&A + lead capture → emails `info@linksvaluers.com`. **Full documentation in [`CHATBOT.md`](CHATBOT.md)** |
+| Mobile menu | All pages | React state in `Header.tsx`, closes on route change |
+| FAQ accordion + category tabs | `/faqs` | `FaqAccordion` component, data-driven |
+| Animated stat counters | Homepage, `/branches` | `Counter` component, counts up on scroll-into-view |
+| Scroll-reveal animations | All pages | `Reveal` component wrapping sections |
+| Team gallery slider | `/about` | `Slider` component, default variant |
+| AI-image promo slider | Homepage | `Slider` component, `promo` variant (bold text overlays) |
+| Blog card slider | Homepage | `CardSlider` component, steps one card at a time |
+| Booking form | `/book-valuation` | `BookingForm` → POSTs to `/api/leads` → FormSubmit (+ optional Telegram) |
+| Contact form | `/contact` | `ContactForm` → same `/api/leads` pattern |
+| Chatbot widget | All pages | Rule-based Q&A + lead capture → `/api/leads`. **Full documentation in [`CHATBOT.md`](CHATBOT.md)** |
 | WhatsApp deep links | All pages (floating button + form fallbacks) | Pre-filled `wa.me` links |
 
 ---
 
 ## 6. Image Asset Inventory
 
+All images live under `public/` (Next.js serves anything here at the matching
+root URL path, e.g. `public/images/ai/deal-sealed.jpg` → `/images/ai/deal-sealed.jpg`).
+Filenames were normalized to lowercase-kebab-case during the migration (no
+spaces) for cleaner URLs — e.g. `Deal Sealed.jpg` → `deal-sealed.jpg`.
+
 | Folder | Contents | Used for |
 |---|---|---|
-| `assets/logo.png` | Official Links logo | Header/footer brand mark, favicon |
-| `images/Management/` | Original 5 leadership headshots | Superseded by sharper root-level versions (kept for reference; not linked from any page) |
-| `images/` (root) | Sharper leadership headshots, team slider photos (`Full team.jpg`, `Valuations team.jpg`, `Marketing department.jpg`, `Administration Departments.jpg`), plus a set of candid `IMG-20260610-WA00xx` / `IMG-20260615-WA00xx` site photos | Leadership grid, About team slider, homepage hero |
-| `images/AI Images/` | 10 stock photos, resized/compressed (originally 1.7–17MB each, now 140–370KB) and renamed descriptively (e.g. `Deal Sealed.jpg`, `Roadside Assistance.jpg`) | Homepage promo slider (5) + blog cards/articles (5) |
-| `images/Avatar/` | `Links ChatBot.png` (in active use) and `Links Bot.png` (⚠️ **not used** — has "R245,000" baked into the artwork, wrong currency for KES market) | Chatbot widget, avatar callouts (FAQs, Contact, blog, homepage blog section) |
-| `images/links favicon/`, `images/logo/` | Extra brand asset exports | Not currently referenced by any page — candidates for cleanup or future use |
+| `public/assets/logo.png` | Official Links logo | Header/footer brand mark, favicon |
+| `public/images/Management/` | Original 5 leadership headshots | Superseded by sharper root-level versions (kept for reference; not linked from any page) |
+| `public/images/` (root) | Sharper leadership headshots (`reuben-muiruri.jpg`, etc.), team slider photos (`full-team.jpg`, `valuations-team.jpg`, `marketing-department.jpg`, `administration-departments.jpg`), plus candid `IMG-20260610-WA00xx` / `IMG-20260615-WA00xx` site photos | Leadership grid, About team slider, homepage hero |
+| `public/images/ai/` | 10 stock photos, resized/compressed (originally 1.7–17MB each, now 140–370KB) | Homepage promo slider (5) + blog cards/articles (5) |
+| `public/images/avatar/` | `links-chatbot.png` (in active use) and `links-bot.png` (⚠️ **not used** — has "R245,000" baked into the artwork, wrong currency for KES market) | Chatbot widget, avatar callouts |
+| `public/images/links favicon/`, `public/images/logo/` | Extra brand asset exports | Not currently referenced by any page — candidates for cleanup |
 
 Several candid photos (`IMG-20260615-WA0004/5/6/9/11/14/19.jpg`) are uploaded
-but not yet placed anywhere — available for future slider slots or page
-sections if more visual variety is wanted.
+but not yet placed anywhere — available for future slider slots if more
+visual variety is wanted.
 
 ---
 
@@ -185,49 +198,44 @@ sections if more visual variety is wanted.
 
 | Service | Used for | Setup needed |
 |---|---|---|
-| **FormSubmit.co** | Booking form, Contact form, Chatbot lead capture — all forward to `info@linksvaluers.com` | ⚠️ First-ever submission to a new address triggers a one-time "Activation Required" confirmation email FormSubmit sends to that inbox. Someone needs to click the link once; after that, all future submissions deliver automatically. |
-| **Google Fonts** | Barlow Condensed, Inter | None — public CDN, already wired via `<link>` tags |
-| **Google Maps (embed)** | `branches.html`, `contact.html` | Keyless `iframe` embed — works, but no API key means no custom markers/styling. Noted as a "before going live" upgrade. |
+| **FormSubmit.co** | Booking form, Contact form, Chatbot lead capture — all forward to `info@linksvaluers.com`, called server-side from `app/api/leads/route.ts` | ⚠️ First-ever submission triggers a one-time "Activation Required" confirmation email to that inbox. Someone needs to click the link once; after that, every submission delivers automatically. |
+| **Telegram (optional)** | Instant push notification the moment a lead comes in, in parallel with the FormSubmit email | Create a bot via `@BotFather`, message it once, fetch `https://api.telegram.org/bot<token>/getUpdates` to find the chat id, then set `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID` as Vercel environment variables. Entirely optional — leads still email fine without it. |
+| **Google Fonts** | Barlow Condensed, Inter | None — self-hosted automatically via `next/font/google`, no runtime request to Google |
+| **Google Maps (embed)** | `/branches`, `/contact` | Keyless `iframe` embed — works, but no API key means no custom markers/styling. Noted as a "before going live" upgrade. |
 | **WhatsApp (`wa.me`)** | Floating button + form fallback links | None — just deep links to `+254 708 412 668` |
-| **GitHub Pages** | Hosting | Auto-deploys on every push to `main` |
+| **Vercel** | Hosting + serverless functions for `/api/leads` | Connect the GitHub repo at vercel.com; auto-deploys on push to `main` |
 
 ---
 
 ## 8. SEO
 
-- Every page has a unique `<title>`, meta description, and canonical URL
-  pointing at `https://www.linksvaluers.com/...`.
-- `index.html` and `contact.html` carry `LocalBusiness` JSON-LD schema;
-  `faqs.html` carries `FAQPage` JSON-LD schema.
-- `og:title` / `og:description` / `og:type` are set on key pages for social
-  link previews.
-- `robots.txt` allows all crawlers and points to `sitemap.xml`.
-- `sitemap.xml` lists all 9 pages, including `/blog`.
+- Every page sets a unique `<title>` / description via Next.js `Metadata` exports, with canonical URLs against `https://www.linksvaluers.com`.
+- Homepage and `/contact` carry `LocalBusiness` JSON-LD schema; `/faqs` carries `FAQPage` JSON-LD schema.
+- `og:title` / `og:description` / `og:type` set on the homepage for social link previews.
+- `/robots.txt` and `/sitemap.xml` are generated dynamically (`app/robots.ts`, `app/sitemap.ts`) — the sitemap includes all static routes plus every blog post automatically.
 
 ---
 
 ## 9. Known Issues / Pending Items
 
-These are flagged so nothing gets lost — none are blockers, but worth working
-through before/after a hard launch:
-
-1. **Custom domain not yet live.** All canonical/OG tags point to
-   `www.linksvaluers.com`, but the site is currently only reachable at the
-   GitHub Pages URL. Point the domain's DNS at GitHub Pages (and add a
-   `CNAME` file to the repo) to go live on the real domain.
-2. **Privacy Policy / Terms of Service** footer links are still placeholders
-   (`href="#"`) on every page — need real pages or at minimum a temporary
-   policy page before public launch.
+1. **Hosting migration not yet done.** The app is built and verified locally
+   (`npm run build` succeeds, all routes return 200) but needs to actually be
+   deployed to Vercel (or similar) — GitHub Pages cannot run it.
+2. **Custom domain not yet live.** Point `www.linksvaluers.com` DNS at the new
+   host once chosen, and add it in that host's project settings.
 3. **Maps use a keyless embed.** Functional, but upgrading to a proper Google
    Maps Embed API key would allow custom green branded markers and per-branch
    info panels.
-4. **`images/Management/`, `images/links favicon/`, `images/logo/`** contain
-   assets superseded or unused by any current page — candidates for cleanup
-   once confirmed unnecessary.
-5. **FormSubmit activation** — confirm the one-time activation email (see
-   above) has actually been clicked; otherwise leads/bookings/messages will
-   silently fail to deliver.
-6. **Chatbot is rule-based, not AI** — see [`CHATBOT.md`](CHATBOT.md) for full
+4. **`public/images/Management/`, `public/images/links favicon/`, `public/images/logo/`**
+   contain assets superseded or unused by any current page — candidates for
+   cleanup once confirmed unnecessary.
+5. **FormSubmit activation** — confirm the one-time activation email has
+   actually been clicked; otherwise leads/bookings/messages will silently fail
+   to deliver.
+6. **Telegram instant notifications are optional and unconfigured** — works
+   fine without them (email-only), but worth setting up if instant push to a
+   phone is wanted. See section 7 above.
+7. **Chatbot is rule-based, not AI** — see [`CHATBOT.md`](CHATBOT.md) for full
    detail and future upgrade paths if a real AI-backed assistant is wanted
    later.
 
@@ -235,15 +243,18 @@ through before/after a hard launch:
 
 ## 10. Change History (high-level)
 
-| Commit (latest first) | Summary |
+| Commit / milestone | Summary |
 |---|---|
+| *(this migration)* | Full rebuild from static HTML/CSS/JS to Next.js + TypeScript + React; real `/api/leads` backend for instant lead notifications; real Privacy/Terms pages; image filenames normalized; `sharp` added for fast image optimization |
+| `7f00ba1` | Update footer social links to real profiles (Facebook, Instagram, X, TikTok, YouTube) |
+| `fe28755` | Add full project documentation and chatbot reference doc |
 | `6161ff3` | Add hovering AI chatbot widget with lead capture across all pages |
 | `542630a` | Add AI-image promo slider, blog with content, and brand avatar across site |
 | `464eeac` | Wire booking and contact forms to send real emails via FormSubmit |
 | `bfaaa93` | Update turnaround time to 4–48hrs, expand partner list to 68 institutions, add team gallery slider |
 | `c711525` | About: feature Links logo beside Mission & Vision |
 | `f632274` | Use official Links logo PNG across site |
-| `e7c691e` | Links Valuers & Assessors website — full multi-page redesign (initial build) |
+| `e7c691e` | Links Valuers & Assessors website — full multi-page redesign (initial static-HTML build) |
 
 ---
 
@@ -253,4 +264,4 @@ through before/after a hard launch:
 - **Chatbot widget deep-dive (editing answers, lead flow, etc.)** → `CHATBOT.md`
 - **This file** → the single source of truth for overall project state
 
-*Last updated: June 16, 2026.*
+*Last updated: June 16, 2026 (Next.js migration).*
