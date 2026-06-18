@@ -374,6 +374,119 @@ body.menu-open .mobile-menu { transform: translateX(0); visibility: visible; }
 .testi-card cite b { color: var(--dark); display: block; font-size: 0.95rem; }
 
 /* ============================================================
+   LOGO TICKER (infinite auto-scroll marquee)
+   ============================================================ */
+.logo-ticker {
+  overflow: hidden;
+  background: #fff;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding-block: 22px;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 7%, #000 93%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, #000 7%, #000 93%, transparent 100%);
+}
+.logo-ticker__track {
+  display: flex;
+  align-items: center;
+  gap: 52px;
+  width: max-content;
+  animation: logoTicker 42s linear infinite;
+  will-change: transform;
+}
+.logo-ticker__track:hover { animation-play-state: paused; }
+.logo-ticker__item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  height: 44px;
+  min-width: 80px;
+  max-width: 140px;
+  filter: grayscale(100%) opacity(0.55);
+  transition: filter 0.3s ease;
+}
+.logo-ticker__item:hover { filter: grayscale(0%) opacity(1); }
+.logo-ticker__item img {
+  max-height: 44px;
+  max-width: 130px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+.logo-ticker__init {
+  width: 48px;
+  height: 44px;
+  border-radius: 8px;
+  background: var(--green-soft);
+  border: 1px solid rgba(60,170,90,0.25);
+  color: var(--green);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+@keyframes logoTicker {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ============================================================
+   LOGO GRID (partners / clients section)
+   ============================================================ */
+.logo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
+  gap: 12px;
+  margin-top: 20px;
+}
+.logo-grid-card {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  padding: 22px 14px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 108px;
+  text-align: center;
+  transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease);
+}
+.logo-grid-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lift); }
+.logo-grid-card img {
+  max-height: 48px;
+  max-width: 110px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  filter: grayscale(15%);
+  transition: filter 0.3s;
+}
+.logo-grid-card:hover img { filter: grayscale(0%); }
+.logo-grid-init {
+  width: 52px;
+  height: 52px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.05rem;
+  letter-spacing: 0.03em;
+}
+.logo-grid-init--orange { background: rgba(232,118,26,0.12); color: var(--orange); }
+.logo-grid-init--green  { background: var(--green-soft); color: var(--green-dark); }
+.logo-grid-init--blue   { background: rgba(47,111,176,0.1); color: #2f6fb0; }
+.logo-grid-init--purple { background: rgba(136,84,208,0.1); color: #8854d0; }
+.logo-grid-name { font-size: 0.73rem; font-weight: 600; color: var(--ink); line-height: 1.35; }
+.bg-dark .logo-grid-card { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.08); }
+.bg-dark .logo-grid-name { color: var(--grey-light); }
+
+/* ============================================================
    CLIENT PILLS
    ============================================================ */
 .client-group + .client-group { margin-top: 30px; }
@@ -812,8 +925,14 @@ body.menu-open .mobile-menu { transform: translateX(0); visibility: visible; }
   .footer-top { grid-template-columns: 1fr 1fr; gap: 30px; }
   .branch-list { max-height: none; }
 }
+@media (max-width: 980px) {
+  .logo-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
+}
 @media (max-width: 640px) {
   :root { --pad-sec: 48px; }
+  .logo-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 10px; }
+  .logo-grid-card { padding: 16px 10px 12px; min-height: 90px; }
+  .logo-ticker__track { gap: 36px; }
   .trust-strip__inner { grid-template-columns: 1fr 1fr; gap: 12px; }
   .trust-item { border-right: 0 !important; font-size: 0.84rem; }
   .stats-grid, .cards-3, .cards-2, .values-grid, .team-grid, .testi-grid, .timeline, .map-stats, .awards-row, .license-grid, .form-row { grid-template-columns: 1fr; }

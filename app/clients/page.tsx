@@ -2,7 +2,8 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import Reveal from '@/components/Reveal';
-import { partnerGroups } from '@/lib/partners';
+import LogoCard from '@/components/LogoCard';
+import { partnerGroups, DOMAIN_MAP } from '@/lib/partners';
 
 export const metadata: Metadata = {
   title: "Our Clients — Trusted by Kenya's Leading Banks, Insurers & Corporates",
@@ -56,16 +57,22 @@ export default function ClientsPage() {
           </Reveal>
           <Reveal>
             <>
-              {partnerGroups.map((group) => (
-                <div className="client-group" key={group.key}>
-                  <h4>{group.label}</h4>
-                  <div className="pills">
-                    {group.partners.map((p) => (
-                      <span className={`pill ${group.pillClass}`} key={p}>{p}</span>
-                    ))}
+              {partnerGroups.map((group) => {
+                const colorClass = group.pillClass === 'pill--orange' ? 'logo-grid-init--orange'
+                  : group.pillClass === 'pill--green'  ? 'logo-grid-init--green'
+                  : group.pillClass === 'pill--blue'   ? 'logo-grid-init--blue'
+                  : 'logo-grid-init--purple';
+                return (
+                  <div className="client-group" key={group.key}>
+                    <h4>{group.label}</h4>
+                    <div className="logo-grid" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))' }}>
+                      {group.partners.map((p) => (
+                        <LogoCard key={p} name={p} domain={DOMAIN_MAP[p]} colorClass={colorClass} />
+                      ))}
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </>
           </Reveal>
         </div>

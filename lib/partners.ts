@@ -133,3 +133,63 @@ export const partnerGroups: PartnerGroup[] = [
 ];
 
 export const totalPartners = partnerGroups.reduce((sum, g) => sum + g.partners.length, 0);
+
+export const DOMAIN_MAP: Record<string, string> = {
+  // Insurance
+  'Africa Merchant Assurance Co.':       'amac.co.ke',
+  'Cannon Assurance Ltd':                'cannonassurance.co.ke',
+  'CIC Insurance Group':                 'cicinsurance.co.ke',
+  'Fidelity Shield Insurance Co. Ltd':   'fidelityshield.co.ke',
+  'First Assurance Kenya Ltd':           'firstassurance.co.ke',
+  'GA Insurance Company Ltd':            'ga-insurance.co.ke',
+  'Geminia Insurance Company Ltd':       'geminia.co.ke',
+  'Heritage Insurance Company':          'heritage.co.ke',
+  'ICEA Lion Group':                     'icealion.com',
+  'Kenindia Assurance Co. Ltd':          'kenindia.com',
+  'Kenya Orient Insurance Co. Ltd':      'kenyaorient.com',
+  'Kenyan Alliance Insurance Co. Ltd':   'kenyanalliance.com',
+  'Madison Insurance Company Ltd':       'madison.co.ke',
+  'MUA Insurance Company':               'mua.co.ke',
+  'NCBA Insurance Company':              'ncbagroup.co.ke',
+  'Old Mutual Insurance Company':        'oldmutual.co.ke',
+  'Pacis Insurance Company Ltd':         'pacis.co.ke',
+  'Sanlam Allianz Kenya':                'sanlam.co.ke',
+  'Takaful Insurance of Africa Ltd':     'takafulafrica.com',
+  // Banks
+  'Access Bank':                         'accessbankplc.com',
+  'Bank of Africa':                      'boakenya.com',
+  'Co-operative Bank':                   'co-opbank.co.ke',
+  'Equity Bank':                         'equitybank.co.ke',
+  'HFC Bank':                            'hfgroup.co.ke',
+  'Kingdom Bank':                        'kingdom.co.ke',
+  'SBM Bank':                            'sbmbank.co.ke',
+  // MFBs
+  'Faulu Microfinance Bank':             'faulu.co.ke',
+  'Letshego Microfinance':               'letshego.com',
+  'Sumac Microfinance':                  'sumacmicrofinance.com',
+  'Eclof':                               'eclof.org',
+  'Watu Gari Ltd':                       'watucredit.com',
+};
+
+export const TICKER_LOGOS = [
+  { name: 'Equity Bank',          domain: 'equitybank.co.ke' },
+  { name: 'Co-operative Bank',    domain: 'co-opbank.co.ke' },
+  { name: 'CIC Insurance',        domain: 'cicinsurance.co.ke' },
+  { name: 'ICEA Lion Group',      domain: 'icealion.com' },
+  { name: 'Heritage Insurance',   domain: 'heritage.co.ke' },
+  { name: 'Old Mutual',           domain: 'oldmutual.co.ke' },
+  { name: 'Sanlam Allianz',       domain: 'sanlam.co.ke' },
+  { name: 'GA Insurance',         domain: 'ga-insurance.co.ke' },
+  { name: 'Access Bank',          domain: 'accessbankplc.com' },
+  { name: 'Madison Insurance',    domain: 'madison.co.ke' },
+  { name: 'Faulu Microfinance',   domain: 'faulu.co.ke' },
+  { name: 'Letshego',             domain: 'letshego.com' },
+  { name: 'Bank of Africa',       domain: 'boakenya.com' },
+  { name: 'SBM Bank',             domain: 'sbmbank.co.ke' },
+  { name: 'First Assurance',      domain: 'firstassurance.co.ke' },
+  { name: 'Geminia Insurance',    domain: 'geminia.co.ke' },
+  { name: 'NCBA',                 domain: 'ncbagroup.co.ke' },
+  { name: 'Pacis Insurance',      domain: 'pacis.co.ke' },
+  { name: 'HFC Bank',             domain: 'hfgroup.co.ke' },
+  { name: 'Kenindia Assurance',   domain: 'kenindia.com' },
+];

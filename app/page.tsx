@@ -6,7 +6,9 @@ import Reveal from '@/components/Reveal';
 import Counter from '@/components/Counter';
 import Slider, { type SlideData } from '@/components/Slider';
 import CardSlider from '@/components/CardSlider';
-import { partnerGroups } from '@/lib/partners';
+import LogoTicker from '@/components/LogoTicker';
+import LogoCard from '@/components/LogoCard';
+import { partnerGroups, DOMAIN_MAP, TICKER_LOGOS } from '@/lib/partners';
 import { blogPosts } from '@/lib/blogPosts';
 
 export const metadata: Metadata = {
@@ -151,6 +153,8 @@ export default function HomePage() {
         </div>
       </div>
 
+      <LogoTicker logos={TICKER_LOGOS} />
+
       <section className="section bg-dark">
         <div className="container">
           <Reveal className="sec-head center">
@@ -294,20 +298,22 @@ export default function HomePage() {
           <Reveal>
             <>
               {partnerGroups.map((group) => {
-                const moreCount = group.partners.length - group.featured.length;
+                const colorClass = group.pillClass === 'pill--orange' ? 'logo-grid-init--orange'
+                  : group.pillClass === 'pill--green'  ? 'logo-grid-init--green'
+                  : group.pillClass === 'pill--blue'   ? 'logo-grid-init--blue'
+                  : 'logo-grid-init--purple';
                 return (
                   <div className="client-group" key={group.key}>
                     <h4>{group.label}</h4>
-                    <div className="pills">
+                    <div className="logo-grid">
                       {group.featured.map((p) => (
-                        <span className={`pill ${group.pillClass}`} key={p}>{p}</span>
+                        <LogoCard key={p} name={p} domain={DOMAIN_MAP[p]} colorClass={colorClass} />
                       ))}
-                      {moreCount > 0 && <span className={`pill ${group.pillClass} client-group__more`}>+{moreCount} more</span>}
                     </div>
                   </div>
                 );
               })}
-              <div style={{ marginTop: 32, textAlign: 'center' }}>
+              <div style={{ marginTop: 36, textAlign: 'center' }}>
                 <Link className="btn btn--ghost" href="/clients">View All 100+ Partners</Link>
               </div>
             </>
