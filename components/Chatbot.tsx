@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 
-const AVATAR = '/images/avatar/links-chatbot.png';
+const AVATAR = '/images/Avatar/links-bot.png';
 const LEAD_KEY = 'linksChatLeadCaptured';
 const SKIP_KEY = 'linksChatLeadSkipped';
 
