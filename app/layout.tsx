@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     template: '%s | Links Valuers'
   },
   description:
-    "Kenya's leading vehicle valuation firm. Dual-licensed by M.A.A.K and I.R.A. 1M+ valuations completed. 99.7% acceptance rate. 4hr-48hr delivery. Book today.",
+    "Kenya's leading vehicle valuation firm. Licensed by M.A.A.K and regulated by I.R.A. 1M+ valuations completed. 99.7% acceptance rate. 4hr-48hr delivery. Book today.",
   icons: { icon: '/assets/logo.png' }
 };
 

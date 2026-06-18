@@ -44,7 +44,7 @@ export default function ClientsPage() {
           <p className="lead">
             Over 100 insurance companies, banks, SACCOs, and microfinance institutions have chosen Links Valuers as
             their preferred vehicle valuation partner. This is not coincidence — it reflects a decade of consistent
-            accuracy, reliability, and the institutional credibility that only a dual-licensed firm can deliver.
+            accuracy, reliability, and the institutional credibility that only a firm licensed by M.A.A.K and regulated by I.R.A can deliver.
           </p>
         </div>
       </section>

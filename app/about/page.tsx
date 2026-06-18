@@ -8,7 +8,7 @@ import Slider from '@/components/Slider';
 export const metadata: Metadata = {
   title: "About Links Valuers — 14+ Years of Vehicle Valuation Excellence in Kenya",
   description:
-    "Established in 2012, Links Valuers is Kenya's most trusted vehicle valuation authority. Dual-licensed, nationwide, and built on integrity.",
+    "Established in 2012, Links Valuers is Kenya's most trusted vehicle valuation authority. Licensed by M.A.A.K and regulated by I.R.A, nationwide, and built on integrity.",
   alternates: { canonical: '/about' }
 };
 
@@ -168,11 +168,11 @@ export default function AboutPage() {
         <div className="container">
           <div className="split">
             <Reveal>
-              <span className="eyebrow">The Only Dual-Licensed Firm of Our Scale in Kenya</span>
-              <h2 className="section-title">Our Dual Licensing — What It Means</h2>
+              <span className="eyebrow">Licensed by M.A.A.K and Regulated by I.R.A</span>
+              <h2 className="section-title">Our Licensing — What It Means</h2>
               <p className="lead" style={{ marginTop: 18 }}>
-                Links Valuers holds active licenses from both the Motor Assessors Association of Kenya (M.A.A.K) and the
-                Insurance Regulatory Authority (I.R.A). This dual certification is rare and significant — our reports
+                Links Valuers holds an active licence from the Motor Assessors Association of Kenya (M.A.A.K) and is
+                regulated by the Insurance Regulatory Authority (I.R.A). This certification is rare and significant — our reports
                 carry weight in two distinct institutional contexts: bank lending decisions{' '}
                 <b style={{ color: '#fff' }}>and</b> insurance claim settlements.
               </p>

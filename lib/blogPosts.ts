@@ -161,7 +161,7 @@ export const blogPosts: BlogPost[] = [
       { type: 'h3', text: 'What An Independent Valuation Actually Changes' },
       {
         type: 'p',
-        text: "A report from a firm with no financial stake in the outcome — dual-licensed, in Links' case, by both M.A.A.K and I.R.A — gives the claims desk a number it can act on without further negotiation. It isn't our job to argue for a higher or lower figure; it's our job to document what the vehicle is actually worth, supported by market data, photographs, and a verifiable inspection trail."
+        text: "A report from a firm with no financial stake in the outcome — licensed by M.A.A.K and regulated by I.R.A, in Links' case, — gives the claims desk a number it can act on without further negotiation. It isn't our job to argue for a higher or lower figure; it's our job to document what the vehicle is actually worth, supported by market data, photographs, and a verifiable inspection trail."
       },
       {
         type: 'p',

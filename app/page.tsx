@@ -14,11 +14,11 @@ import { blogPosts } from '@/lib/blogPosts';
 export const metadata: Metadata = {
   title: "Links Valuers — Kenya's Trusted Vehicle Valuation Authority",
   description:
-    "Kenya's leading vehicle valuation firm. Dual-licensed by M.A.A.K and I.R.A. 1M+ valuations completed. 99.7% acceptance rate. 2hr-24hr delivery. Book today.",
+    "Kenya's leading vehicle valuation firm. Licensed by M.A.A.K and regulated by I.R.A. 1M+ valuations completed. 99.7% acceptance rate. 2hr-24hr delivery. Book today.",
   alternates: { canonical: '/' },
   openGraph: {
     title: "Links Valuers — Kenya's Trusted Vehicle Valuation Authority",
-    description: 'Dual-licensed vehicle valuation. 1M+ valuations, 99.7% acceptance, 2hr-24hr delivery across Kenya.',
+    description: 'Licensed by M.A.A.K, regulated by I.R.A. 1M+ valuations, 99.7% acceptance, 2hr-24hr delivery across Kenya.',
     type: 'website'
   }
 };
@@ -80,7 +80,7 @@ const PROMO_SLIDES: SlideData[] = [
     alt: 'Client consultation taking place inside a vehicle showroom',
     eyebrow: 'Independently Verified',
     title: 'Every Valuation, Backed by Evidence',
-    text: 'Dual-licensed by M.A.A.K and I.R.A, every Links report is built on verifiable market data — not opinion.',
+    text: 'Licensed by M.A.A.K and regulated by I.R.A, every Links report is built on verifiable market data — not opinion.',
     cta: { label: 'About Links', href: '/about' }
   }
 ];
@@ -104,7 +104,7 @@ const TIMELINE = [
 ];
 
 const PILLARS = [
-  { icon: ShieldCheck, title: 'Dual Licensed', text: 'Certified by both M.A.A.K and I.R.A — the only dual-licensed firm of our scale in Kenya.' },
+  { icon: ShieldCheck, title: 'Licensed & Regulated', text: 'Licensed by M.A.A.K and regulated by I.R.A — the only firm of our scale in Kenya with both.' },
   { icon: ClipboardCheck, title: 'Independently Verified', text: 'Our valuations are based on market data, not opinion. Every figure is traceable to verifiable evidence.' },
   { icon: MapPin, title: 'Nationwide Coverage', text: '25 branches across Kenya means we inspect vehicles wherever they are — no location is too remote.' },
   { icon: FileCheck2, title: 'Dual-Review Quality Control', text: 'Every report checked by a second senior valuer before delivery — accuracy institutions stake decisions on.' }
